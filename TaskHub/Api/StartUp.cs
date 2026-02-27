@@ -3,6 +3,7 @@ using Api.UseCases.Users.Interfaces;
 using Dal;
 using Logic;
 using Microsoft.OpenApi.Models;
+using Api.Middleware;
 
 namespace Api;
 
@@ -36,6 +37,8 @@ public sealed class Startup
         services.AddControllers();
         services.AddDal();
         services.AddLogic();
+        //services.AddTransient<StudentIdMiddleware>();
+        //services.AddTransient<TimerMiddleware>();
         
         services.AddScoped<IManageUserUseCase, ManageUserUseCase>();
         
@@ -81,9 +84,13 @@ public sealed class Startup
 
         app.UseRouting();
 
+        app.UseTimer();
+        app.UseStudentId();
+
         app.UseEndpoints(endpoints =>
         {
             endpoints.MapControllers();
+            endpoints.Map("/", async context => await context.Response.WriteAsync("Hi"));
         });
     }
 }
