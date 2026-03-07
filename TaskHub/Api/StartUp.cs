@@ -1,3 +1,5 @@
+using Api.DI;
+using Api.Services;
 using Api.UseCases.Users;
 using Api.UseCases.Users.Interfaces;
 using Dal;
@@ -38,6 +40,12 @@ public sealed class Startup
         services.AddLogic();
         
         services.AddScoped<IManageUserUseCase, ManageUserUseCase>();
+        services.AddSingleton<IClockService, ClockService>();
+        services.AddSingleton<IClockService, FancyClockService>();
+        services.AddScoped<IClockService, ClockService>();
+        services.AddScoped<IClockService, FancyClockService>();
+        services.AddTransient<IClockService, ClockService>();
+        services.AddTransient<IClockService, FancyClockService>();
         
         services.AddCors(options =>
         {
@@ -84,6 +92,7 @@ public sealed class Startup
         app.UseEndpoints(endpoints =>
         {
             endpoints.MapControllers();
+            endpoints.Map("/", async context => await context.Response.WriteAsync("Hi"));
         });
     }
 }
