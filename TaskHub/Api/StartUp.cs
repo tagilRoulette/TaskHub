@@ -1,3 +1,5 @@
+using Api.DI;
+using Api.Services;
 using Api.UseCases.Users;
 using Api.UseCases.Users.Interfaces;
 using Dal;
@@ -36,9 +38,10 @@ public sealed class Startup
         services.AddControllers();
         services.AddDal();
         services.AddLogic();
-        
+
         services.AddScoped<IManageUserUseCase, ManageUserUseCase>();
-        
+        services.AddScopeTestServices();
+
         services.AddCors(options =>
         {
             options.AddDefaultPolicy(builder =>
