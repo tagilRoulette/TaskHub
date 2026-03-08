@@ -38,15 +38,10 @@ public sealed class Startup
         services.AddControllers();
         services.AddDal();
         services.AddLogic();
-        
+
         services.AddScoped<IManageUserUseCase, ManageUserUseCase>();
-        services.AddSingleton<IClockService, ClockService>();
-        services.AddSingleton<IClockService, FancyClockService>();
-        services.AddScoped<IClockService, ClockService>();
-        services.AddScoped<IClockService, FancyClockService>();
-        services.AddTransient<IClockService, ClockService>();
-        services.AddTransient<IClockService, FancyClockService>();
-        
+        services.AddScopeTestServices();
+
         services.AddCors(options =>
         {
             options.AddDefaultPolicy(builder =>

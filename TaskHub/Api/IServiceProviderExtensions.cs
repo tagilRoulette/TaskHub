@@ -10,20 +10,17 @@ namespace Api
         /// <typeparam name="T">Generic type that needs to be resolved.</typeparam>
         /// <param name="n">Number of first matches to be resolved and displayed. Must be greater than zero.</param>
         /// <returns></returns>
-        public static void ResolveFirst<T>(this IServiceProvider serviceProvider, int n)
+        public static void Resolve<T>(this IServiceProvider serviceProvider)
             where T : IHasInstanceId
         {
-            if (n <= 0) throw new ArgumentException($"'n' must be greater than zero. Got 'n' = {n}");
+            var first = serviceProvider.GetService<T>();
+            var second = serviceProvider.GetService<T>();
+
             Console.WriteLine("Type: " + typeof(T).FullName);
-            var serviceIds = serviceProvider.GetServices<T>()
-                .Take(n)
-                .Select(service => service.InstanceId);
             Console.WriteLine("Instance IDs:");
-            int idCounter = 1;
-            Guid firstServiceId = serviceIds.First();
-            foreach (var service in serviceIds)
-                Console.WriteLine($"\t{idCounter++}) {service}");
-            string negation = serviceIds.All(service => service == firstServiceId) ? "" : "not ";
+            Console.WriteLine($"\t1) {first.InstanceId}");
+            Console.WriteLine($"\t2) {second.InstanceId}");
+            string negation = first.InstanceId == second.InstanceId ? "" : "not ";
             Console.WriteLine($"Instances are {negation}equal");
         }
     }

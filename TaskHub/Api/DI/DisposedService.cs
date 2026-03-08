@@ -2,13 +2,14 @@
 {
     public class DisposedService : IDisposable, IHasInstanceId
     {
-        public Guid InstanceId { get; }
+        public Guid InstanceId { get; } = Guid.NewGuid();
         private readonly string _toString;
         
-        public DisposedService(Guid instanceId)
+        public DisposedService()
         {
-            InstanceId = instanceId;
             _toString = $"{GetType().FullName} {InstanceId}";
+            Console.WriteLine("Creating...");
+            Log();
         }
 
         public void Log() => Console.WriteLine(ToString());
@@ -20,6 +21,7 @@
 
         public void Dispose()
         {
+            Console.WriteLine("Disposing...");
             Log();
             GC.SuppressFinalize(this);
         }
