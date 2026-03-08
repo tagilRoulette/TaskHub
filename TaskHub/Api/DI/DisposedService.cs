@@ -3,26 +3,19 @@
     public class DisposedService : IDisposable, IHasInstanceId
     {
         public Guid InstanceId { get; } = Guid.NewGuid();
-        private readonly string _toString;
+        private readonly string _logString;
+        private readonly ILogger _logger;
         
-        public DisposedService()
+        public DisposedService(ILogger logger)
         {
-            _toString = $"{GetType().FullName} {InstanceId}";
-            Console.WriteLine("Creating...");
-            Log();
-        }
-
-        public void Log() => Console.WriteLine(ToString());
-
-        public override string ToString()
-        {
-            return _toString;
+            _logString = $"{GetType().FullName} {InstanceId}";
+            _logger = logger;
+            _logger.LogInformation("Creating... " + _logString);
         }
 
         public void Dispose()
         {
-            Console.WriteLine("Disposing...");
-            Log();
+            _logger.LogInformation("Disposing... " + _logString);
             GC.SuppressFinalize(this);
         }
     }

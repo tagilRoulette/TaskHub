@@ -87,7 +87,6 @@ public sealed class Startup
         app.UseEndpoints(endpoints =>
         {
             endpoints.MapControllers();
-            endpoints.Map("/", async context => await context.Response.WriteAsync("Hi"));
         });
     }
 }
