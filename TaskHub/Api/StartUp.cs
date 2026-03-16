@@ -36,9 +36,9 @@ public sealed class Startup
         services.AddControllers();
         services.AddDal();
         services.AddLogic();
-        
+
         services.AddScoped<IManageUserUseCase, ManageUserUseCase>();
-        
+
         services.AddCors(options =>
         {
             options.AddDefaultPolicy(builder =>
