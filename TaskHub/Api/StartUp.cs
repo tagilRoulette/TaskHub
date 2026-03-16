@@ -3,7 +3,6 @@ using Api.UseCases.Users.Interfaces;
 using Dal;
 using Logic;
 using Microsoft.OpenApi.Models;
-using Api.Middleware;
 
 namespace Api;
 
@@ -37,9 +36,9 @@ public sealed class Startup
         services.AddControllers();
         services.AddDal();
         services.AddLogic();
-        
+
         services.AddScoped<IManageUserUseCase, ManageUserUseCase>();
-        
+
         services.AddCors(options =>
         {
             options.AddDefaultPolicy(builder =>
@@ -81,9 +80,6 @@ public sealed class Startup
         }
 
         app.UseRouting();
-
-        app.UseTimer();
-        app.UseStudentId();
 
         app.UseEndpoints(endpoints =>
         {

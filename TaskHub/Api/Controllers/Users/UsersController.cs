@@ -1,8 +1,6 @@
-using System.ComponentModel.DataAnnotations;
 using Api.Attributes;
 using Api.Controllers.Users.Request;
 using Api.Controllers.Users.Response;
-using Api.Middleware;
 using Api.UseCases.Users.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 
@@ -13,6 +11,8 @@ namespace Api.Controllers.Users;
 /// </summary>
 [ApiController]
 [Route("users")]
+[ResponseTimeHeader, StudentInfoHeaders]
+
 public sealed class UsersController : ControllerBase
 {
     /// <summary>
@@ -32,10 +32,9 @@ public sealed class UsersController : ControllerBase
     /// <param name="cancellationToken">Токен отмены</param>
     /// <returns>Созданный пользователь</returns>
     [HttpPost]
+    [ValidateUserRequest]
     public async Task<ActionResult<UserResponse>> CreateUserAsync(
-        [FromBody,
-        Required(ErrorMessage = "Тело запроса отсутствует"),
-        ValidateUserRequest(ErrorMessage = "Имя пользователя не задано")] CreateUserRequest? request,
+        [FromBody] CreateUserRequest? request,
         CancellationToken cancellationToken)
     {
         var user = await _userUseCase.CreateUserAsync(request!.Name, cancellationToken);
@@ -48,8 +47,6 @@ public sealed class UsersController : ControllerBase
     /// <param name="cancellationToken">Токен отмены</param>
     /// <returns>Список пользователей</returns>
     [HttpGet]
-    [Timer]
-    [StudentId]
     public async Task<ActionResult<UserListResponse>> GetAllUsersAsync(CancellationToken cancellationToken)
     {
         var response = await _userUseCase.GetAllUsersAsync(cancellationToken);
@@ -63,8 +60,6 @@ public sealed class UsersController : ControllerBase
     /// <param name="cancellationToken">Токен отмены</param>
     /// <returns>Пользователь или 404, если пользователь не найден</returns>
     [HttpGet("{id:guid}")]
-    [Timer]
-    [StudentId]
     public async Task<ActionResult<UserResponse>> GetUserByIdAsync([FromRoute] Guid id, CancellationToken cancellationToken)
     {
         var userResponse = await _userUseCase.GetUserByIdAsync(id, cancellationToken);
@@ -85,9 +80,10 @@ public sealed class UsersController : ControllerBase
     /// <param name="cancellationToken">Токен отмены</param>
     /// <returns>204 при успехе или 400 при неверном запросе</returns>
     [HttpPut("{id:guid}/name")]
+    [ValidateUserRequest]
     public async Task<IActionResult> SetUserNameAsync(
         [FromRoute] Guid id,
-        [FromBody, Required, ValidateUserRequest] SetUserNameRequest? request,
+        [FromBody] SetUserNameRequest? request,
         CancellationToken cancellationToken)
     {
         await _userUseCase.SetUserNameAsync(id, request!.Name!, cancellationToken);
