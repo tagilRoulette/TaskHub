@@ -1,17 +1,18 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Dal.Entities;
 
 namespace Dal.Context
 {
     public sealed class TaskDbContext : DbContext
     {
-        public TaskDbContext(DbContextOptions options)
+        public TaskDbContext(DbContextOptions<TaskDbContext> options)
             : base(options) { }
 
-        public DbSet<Entities.TaskEntity> Tasks => Set<Entities.TaskEntity>();
+        public DbSet<TaskEntity> Tasks => Set<TaskEntity>();
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<Entities.TaskEntity>(entity =>
+            modelBuilder.Entity<TaskEntity>(entity =>
             {
                 entity.ToTable("tasks");
 

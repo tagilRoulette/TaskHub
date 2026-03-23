@@ -18,7 +18,7 @@ public class TasksController : Controller
     }
 
     [HttpPost]
-    public async Task<ActionResult<TaskResponse>> CreateTask(
+    public async Task<ActionResult<TaskResponse>> CreateTaskAsync(
         [FromBody] CreateTaskRequest? request,
         CancellationToken cancellationToken)
     {
@@ -27,7 +27,7 @@ public class TasksController : Controller
     }
 
     [HttpGet]
-    public async Task<ActionResult<TaskResponseList>> GetAllTasks(
+    public async Task<ActionResult<TaskResponseList>> GetAllTasksAsync(
         CancellationToken cancellationToken)
     {
         var tasks = await _taskUseCase.GetTasksUseCase(cancellationToken);
@@ -35,7 +35,7 @@ public class TasksController : Controller
     }
 
     [HttpGet("{id:guid}")]
-    public async Task<ActionResult<TaskResponse>> GetTaskById(
+    public async Task<ActionResult<TaskResponse>> GetTaskByIdAsync(
         [FromRoute] Guid id,
         CancellationToken cancellationToken)
     {
@@ -45,7 +45,7 @@ public class TasksController : Controller
     }
 
     [HttpPut("{id:guid}/title")]
-    public async Task<ActionResult<TaskResponseList>> SetTaskTitle(
+    public async Task<ActionResult<TaskResponseList>> SetTaskTitleAsync(
         [FromRoute] Guid id,
         [FromBody] SetTaskTitleRequest request,
         CancellationToken cancellationToken)
@@ -55,7 +55,7 @@ public class TasksController : Controller
     }
 
     [HttpDelete("{id:guid}")]
-    public async Task<IActionResult> DeleteUserByIdAsync(
+    public async Task<IActionResult> DeleteTaskByIdAsync(
         [FromRoute] Guid id,
         CancellationToken cancellationToken)
     {
@@ -65,7 +65,7 @@ public class TasksController : Controller
     }
 
     [HttpDelete]
-    public async Task<IActionResult> DeleteAllUsersAsync(CancellationToken cancellationToken)
+    public async Task<IActionResult> DeleteAllTasksAsync(CancellationToken cancellationToken)
     {
         await _taskUseCase.DeleteTasksUseCase(cancellationToken);
         return NoContent();
