@@ -1,8 +1,8 @@
 ﻿using Dal.Repositories.Interfaces;
-using Logic.Users.Models;
-using Logic.Users.Services.Interfaces;
+using Logic.Tasks.Models;
+using Logic.Tasks.Services.Interfaces;
 
-namespace Logic.Users.Services
+namespace Logic.Tasks.Services
 {
     internal sealed class TaskService : ITaskService
     {

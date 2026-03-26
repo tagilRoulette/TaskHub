@@ -1,4 +1,4 @@
-﻿namespace Logic.Users.Models;
+﻿namespace Logic.Tasks.Models;
 
 public sealed class TaskModel
 {

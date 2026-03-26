@@ -1,6 +1,6 @@
-﻿using Logic.Users.Models;
+﻿using Logic.Tasks.Models;
 
-namespace Logic.Users.Services.Interfaces;
+namespace Logic.Tasks.Services.Interfaces;
 
 public interface ITaskService
 {

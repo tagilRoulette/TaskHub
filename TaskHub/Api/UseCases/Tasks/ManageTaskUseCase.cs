@@ -1,6 +1,6 @@
 ﻿using Api.Controllers.Tasks.Response;
 using Api.UseCases.Tasks.Interfaces;
-using Logic.Users.Services.Interfaces;
+using Logic.Tasks.Services.Interfaces;
 
 namespace Api.UseCases.Tasks
 {
