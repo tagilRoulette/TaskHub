@@ -1,5 +1,7 @@
+using Api.Attributes;
 using Api.Controllers.Users.Request;
 using Api.Controllers.Users.Response;
+using Api.Filters;
 using Api.UseCases.Users.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 
@@ -10,6 +12,8 @@ namespace Api.Controllers.Users;
 /// </summary>
 [ApiController]
 [Route("users")]
+[StudentInfoHeadersFilter]
+[ServiceFilter(typeof(RequestLoggingFilterAttribute))]
 public sealed class UsersController : ControllerBase
 {
     /// <summary>
@@ -59,7 +63,7 @@ public sealed class UsersController : ControllerBase
     public async Task<ActionResult<UserResponse>> GetUserByIdAsync([FromRoute] Guid id, CancellationToken cancellationToken)
     {
         var userResponse = await _userUseCase.GetUserByIdAsync(id, cancellationToken);
-        
+
         if (userResponse is null)
         {
             return NotFound();

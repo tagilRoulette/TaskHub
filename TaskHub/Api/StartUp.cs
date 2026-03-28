@@ -1,5 +1,6 @@
 using Api.UseCases.Tasks;
 using Api.UseCases.Tasks.Interfaces;
+using Api.Filters;
 using Api.UseCases.Users;
 using Api.UseCases.Users.Interfaces;
 using Dal;
@@ -39,6 +40,7 @@ public sealed class Startup
         services.AddControllers();
         services.AddDal();
         services.AddLogic();
+        services.AddFilters();
         
         services.AddScoped<IManageUserUseCase, ManageUserUseCase>();
         services.AddScoped<IManageTaskUseCase, ManageTaskUseCase>();
