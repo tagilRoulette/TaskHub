@@ -1,6 +1,10 @@
+using Api.UseCases.Tasks;
+using Api.UseCases.Tasks.Interfaces;
+using Api.Filters;
 using Api.UseCases.Users;
 using Api.UseCases.Users.Interfaces;
 using Dal;
+using Dal.Context;
 using Logic;
 using Microsoft.OpenApi.Models;
 
@@ -36,9 +40,11 @@ public sealed class Startup
         services.AddControllers();
         services.AddDal();
         services.AddLogic();
+        services.AddFilters();
         
         services.AddScoped<IManageUserUseCase, ManageUserUseCase>();
-        
+        services.AddScoped<IManageTaskUseCase, ManageTaskUseCase>();
+
         services.AddCors(options =>
         {
             options.AddDefaultPolicy(builder =>
