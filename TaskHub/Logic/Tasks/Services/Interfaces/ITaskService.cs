@@ -11,7 +11,7 @@ public interface ITaskService
     /// <param name="createdByUserId">ID Пользователя, создавшего задачу</param>
     /// <param name="cancellationToken">Токен отмены</param>
     /// <returns>Модель задачи</returns>
-    Task<TaskModel> CreateTaskAsync(string title, Guid createdByUserId, CancellationToken cancellationToken);
+    Task<TaskModel> CreateTaskAsync(string? title, Guid? createdByUserId, CancellationToken cancellationToken);
 
     /// <summary>
     /// Получить все задачи

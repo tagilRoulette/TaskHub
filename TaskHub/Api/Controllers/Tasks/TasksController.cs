@@ -1,13 +1,19 @@
-﻿using Api.Controllers.Tasks.Request;
+﻿using Api.Attributes;
+using Api.Controllers.Tasks.Request;
 using Api.Controllers.Tasks.Response;
 using Api.Controllers.Users.Request;
+using Api.Filters;
+using Api.Filters.TaskModel;
 using Api.UseCases.Tasks.Interfaces;
 using Microsoft.AspNetCore.Mvc;
+
 
 namespace Api.Controllers.Tasks;
 
 [ApiController]
 [Route("/tasks")]
+[StudentInfoHeadersFilter]
+[ServiceFilter(typeof(RequestLoggingFilterAttribute))]
 public class TasksController : Controller
 {
     private readonly IManageTaskUseCase _taskUseCase;
@@ -18,6 +24,7 @@ public class TasksController : Controller
     }
 
     [HttpPost]
+    [ValidateCreateTaskRequestFilter]
     public async Task<ActionResult<TaskResponse>> CreateTaskAsync(
         [FromBody] CreateTaskRequest? request,
         CancellationToken cancellationToken)
@@ -45,9 +52,10 @@ public class TasksController : Controller
     }
 
     [HttpPut("{id:guid}/title")]
+    [ValidateSetTaskTitleRequestFilter]
     public async Task<ActionResult<TaskResponseList>> SetTaskTitleAsync(
         [FromRoute] Guid id,
-        [FromBody] SetTaskTitleRequest request,
+        [FromBody] SetTaskTitleRequest? request,
         CancellationToken cancellationToken)
     {
         await _taskUseCase.SetTaskTitleUseCase(id, request.Title, cancellationToken);

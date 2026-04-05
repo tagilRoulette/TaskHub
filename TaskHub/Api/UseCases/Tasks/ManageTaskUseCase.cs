@@ -16,7 +16,7 @@ namespace Api.UseCases.Tasks
         public async Task SetTaskTitleUseCase(Guid id, string title, CancellationToken cancellationToken) =>
             await _taskService.SetTaskTitleAsync(id, title, cancellationToken);
 
-        public async Task<TaskResponse> CreateTaskUseCase(string title, Guid userCreatorId, CancellationToken cancellationToken)
+        public async Task<TaskResponse> CreateTaskUseCase(string? title, Guid? userCreatorId, CancellationToken cancellationToken)
         {
             var task = await _taskService.CreateTaskAsync(title, userCreatorId, cancellationToken);
             return new(task.Id, task.Title, task.CreatedByUserId, task.CreatedUtc);

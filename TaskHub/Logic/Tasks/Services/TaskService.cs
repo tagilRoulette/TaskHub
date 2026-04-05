@@ -13,7 +13,7 @@ namespace Logic.Tasks.Services
             _taskRepository = taskRepository;
         }
 
-        public async Task<TaskModel> CreateTaskAsync(string title, Guid createdByUserId, CancellationToken cancellationToken)
+        public async Task<TaskModel> CreateTaskAsync(string? title, Guid? createdByUserId, CancellationToken cancellationToken)
         {
             var task = await _taskRepository.CreateTaskAsync(title, DateTime.UtcNow, createdByUserId, cancellationToken);
             return new(task.Id, task.Title, task.CreatedUtc, task.CreatedByUserId);

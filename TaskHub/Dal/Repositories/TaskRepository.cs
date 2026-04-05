@@ -14,7 +14,7 @@ namespace Dal.Repositories
             _dbContext = dbContext;
         }
 
-        public async Task<TaskEntity> CreateTaskAsync(string title, DateTimeOffset createdUtc, Guid createdByUserId, CancellationToken cancellationToken)
+        public async Task<TaskEntity> CreateTaskAsync(string? title, DateTimeOffset createdUtc, Guid? createdByUserId, CancellationToken cancellationToken)
         {
             var task = new TaskEntity()
             {

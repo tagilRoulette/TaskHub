@@ -12,8 +12,6 @@ namespace Api.Controllers.Users;
 /// </summary>
 [ApiController]
 [Route("users")]
-[StudentInfoHeadersFilter]
-[ServiceFilter(typeof(RequestLoggingFilterAttribute))]
 public sealed class UsersController : ControllerBase
 {
     /// <summary>

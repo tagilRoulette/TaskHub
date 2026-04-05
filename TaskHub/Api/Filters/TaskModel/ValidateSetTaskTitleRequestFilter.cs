@@ -1,15 +1,19 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
 
-namespace Api.Filters;
+namespace Api.Filters.TaskModel;
 
-public class ValidateCreateTaskRequestFilter : ActionFilterAttribute
+public class ValidateSetTaskTitleRequestFilter : ActionFilterAttribute
 {
     public override async Task OnActionExecutionAsync(ActionExecutingContext context, ActionExecutionDelegate next)
     {
-        if (context.HttpContext.Request.Body.Length == 0)
+        context.ActionArguments.TryGetValue("request", out object? request);
+        if (request is null)
+        {
             context.Result = new BadRequestObjectResult("Тело запроса отсутствует");
-        if (context.)
-            await next.Invoke();
+            return;
+        }
+
+        await base.OnActionExecutionAsync(context, next);
     }
 }

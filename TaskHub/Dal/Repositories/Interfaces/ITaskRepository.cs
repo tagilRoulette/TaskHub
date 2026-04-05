@@ -14,7 +14,7 @@ public interface ITaskRepository
     /// <param name="createdUtc">Дата и время создания задачи в UTC</param>
     /// <param name="cancellationToken">Токен отмены</param>
     /// <returns>Задача</returns>
-    Task<TaskEntity> CreateTaskAsync(string title, DateTimeOffset createdUtc, Guid createdByUserId, CancellationToken cancellationToken);
+    Task<TaskEntity> CreateTaskAsync(string? title, DateTimeOffset createdUtc, Guid? createdByUserId, CancellationToken cancellationToken);
 
     /// <summary>
     /// Получить все задачи

@@ -8,5 +8,5 @@ public sealed class TaskEntity
     public string? Title { get; set; }
     public DateTimeOffset CreatedUtc { get; set; }
     [ForeignKey("UserId")]
-    public Guid CreatedByUserId { get; set; }
+    public Guid? CreatedByUserId { get; set; }
 }

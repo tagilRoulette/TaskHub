@@ -1,5 +1,6 @@
 ﻿using System.Diagnostics;
 using Microsoft.AspNetCore.Mvc.Filters;
+using Microsoft.AspNetCore.Mvc.Infrastructure;
 
 namespace Api.Filters
 {
@@ -13,22 +14,19 @@ namespace Api.Filters
             _logger = logger;
         }
 
-        public override void OnActionExecuting(ActionExecutingContext context)
+        public async override Task OnActionExecutionAsync(ActionExecutingContext context, ActionExecutionDelegate next)
         {
             _logger.LogInformation("Method {Method}", context.HttpContext.Request.Method);
             _logger.LogInformation("Path: {Path}", context.HttpContext.Request.Path);
             _sw.Restart();
 
-            base.OnActionExecuting(context);
-        }
+            await next.Invoke();
 
-        public override void OnActionExecuted(ActionExecutedContext context)
-        {
             _sw.Stop();
-            _logger.LogInformation("Response status code: {Code}", context.HttpContext.Response.StatusCode);
+            var statusCodeResponse = ((IStatusCodeActionResult?)context.Result)?.StatusCode
+                ?? context.HttpContext.Response.StatusCode;
+            _logger.LogInformation("Response status code: {Code}", statusCodeResponse);
             _logger.LogInformation("Action run time: {Time}", _sw.ElapsedMilliseconds);
-
-            base.OnActionExecuted(context);
         }
     }
 }
