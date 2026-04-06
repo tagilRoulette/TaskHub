@@ -1,11 +1,11 @@
+using Api.Filters;
 using Api.UseCases.Tasks;
 using Api.UseCases.Tasks.Interfaces;
-using Api.Filters;
 using Api.UseCases.Users;
 using Api.UseCases.Users.Interfaces;
 using Dal;
-using Dal.Context;
 using Logic;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.OpenApi.Models;
 
 namespace Api;
@@ -41,7 +41,16 @@ public sealed class Startup
         services.AddDal();
         services.AddLogic();
         services.AddFilters();
-        
+
+        services.Configure<ApiBehaviorOptions>(o =>
+        {
+            o.InvalidModelStateResponseFactory = actionContext =>
+            {
+                string? firstErrorMsg = actionContext.ModelState.First().Value?.Errors.First().ErrorMessage;
+                return new BadRequestObjectResult(firstErrorMsg);
+            };
+        });
+
         services.AddScoped<IManageUserUseCase, ManageUserUseCase>();
         services.AddScoped<IManageTaskUseCase, ManageTaskUseCase>();
 

@@ -1,10 +1,8 @@
-﻿using Api.Attributes;
-using Api.Controllers.Tasks.Request;
+﻿using Api.Controllers.Tasks.Request;
 using Api.Controllers.Tasks.Response;
 using Api.Controllers.Users.Request;
-using Api.Filters;
-using Api.Filters.TaskModel;
 using Api.UseCases.Tasks.Interfaces;
+using Infrastructure.Attributes;
 using Microsoft.AspNetCore.Mvc;
 
 
@@ -12,8 +10,6 @@ namespace Api.Controllers.Tasks;
 
 [ApiController]
 [Route("/tasks")]
-[StudentInfoHeadersFilter]
-[ServiceFilter(typeof(RequestLoggingFilterAttribute))]
 public class TasksController : Controller
 {
     private readonly IManageTaskUseCase _taskUseCase;
@@ -24,7 +20,6 @@ public class TasksController : Controller
     }
 
     [HttpPost]
-    [ValidateCreateTaskRequestFilter]
     public async Task<ActionResult<TaskResponse>> CreateTaskAsync(
         [FromBody] CreateTaskRequest? request,
         CancellationToken cancellationToken)
@@ -41,9 +36,9 @@ public class TasksController : Controller
         return Ok(tasks);
     }
 
-    [HttpGet("{id:guid}")]
+    [HttpGet("{id}")]
     public async Task<ActionResult<TaskResponse>> GetTaskByIdAsync(
-        [FromRoute] Guid id,
+        [FromRouteTaskId] Guid id,
         CancellationToken cancellationToken)
     {
         var task = await _taskUseCase.GetTaskUseCase(id, cancellationToken);
@@ -51,10 +46,9 @@ public class TasksController : Controller
         return Ok(task);
     }
 
-    [HttpPut("{id:guid}/title")]
-    [ValidateSetTaskTitleRequestFilter]
+    [HttpPut("{id}/title")]
     public async Task<ActionResult<TaskResponseList>> SetTaskTitleAsync(
-        [FromRoute] Guid id,
+        [FromRouteTaskId] Guid id,
         [FromBody] SetTaskTitleRequest? request,
         CancellationToken cancellationToken)
     {
@@ -62,9 +56,9 @@ public class TasksController : Controller
         return NoContent();
     }
 
-    [HttpDelete("{id:guid}")]
+    [HttpDelete("{id}")]
     public async Task<IActionResult> DeleteTaskByIdAsync(
-        [FromRoute] Guid id,
+        [FromRouteTaskId] Guid id,
         CancellationToken cancellationToken)
     {
         var deleted = await _taskUseCase.DeleteTaskUseCase(id, cancellationToken);
